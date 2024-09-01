@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View,PermissionsAndroid,TouchableOpacity } from 'react-native';
+import { Text, View,PermissionsAndroid,TouchableOpacity, Alert } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
 
 
@@ -8,7 +9,7 @@ import { Text, View,PermissionsAndroid,TouchableOpacity } from 'react-native';
 
 function App(): React.JSX.Element {
 
-  const requestCameraPermission = async () => {
+  const Permission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -29,6 +30,20 @@ function App(): React.JSX.Element {
       console.warn(err);
     }
   };
+
+  const [currentLocation,setCurrentLocation]=useState(null)
+
+  const getCurrentLocation =()=>{
+    Geolocation.getCurrentPosition(
+      position=>{ const {latitude,longitude}=position.coords;
+      setCurrentLocation({latitude,longitude})
+      console.log(latitude,longitude)
+    },
+    error => Alert.alert('Error',error.message),
+    {enableHighAccuracy:true,timeout:15000,maximumAge:10000}
+    
+    )
+  }
   
 
   return (
@@ -42,3 +57,7 @@ function App(): React.JSX.Element {
 
 
 export default App;
+function useState(arg0: null): [any, any] {
+  throw new Error('Function not implemented.');
+}
+
